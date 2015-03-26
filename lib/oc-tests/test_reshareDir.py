@@ -54,6 +54,13 @@ def setup(step):
     check_users(config.oc_number_test_users)
 
     reset_rundir()
+    reset_server_log_file()
+
+    step (9, 'Validate server log file is clean')
+
+    d = make_workdir()
+    scrape_log_file(d)
+
 
 @add_worker
 def sharer(step):
@@ -76,7 +83,7 @@ def sharer(step):
     logger.info('md5_sharer: %s',shared['md5_sharer'])
 
     list_files(d)
-    run_ocsync(d)
+    run_ocsync(d,user_num=1)
     list_files(d)
 
     step (4, 'Sharer shares directory')

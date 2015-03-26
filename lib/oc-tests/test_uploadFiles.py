@@ -74,6 +74,13 @@ def setup(step):
     check_users(config.oc_number_test_users)
 
     reset_rundir()
+    reset_server_log_file()
+
+    step (15, 'Validate server log file is clean')
+
+    d = make_workdir()
+    scrape_log_file(d)
+
 
 @add_worker
 def sharer(step):
@@ -88,7 +95,7 @@ def sharer(step):
     localDir = make_workdir(dirName)
 
     list_files(d)
-    run_ocsync(d)
+    run_ocsync(d,user_num=1)
     list_files(d)
 
     step (4,'Sharer shares directory')
@@ -105,7 +112,7 @@ def sharer(step):
 
     step (7, 'Sharer validates newly added files')
 
-    run_ocsync(d)
+    run_ocsync(d,user_num=1)
 
     list_files(d+'/localShareDir')
     checkFilesExist(d) 
