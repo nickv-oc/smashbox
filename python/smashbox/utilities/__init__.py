@@ -15,7 +15,7 @@ def OWNCLOUD_CHUNK_SIZE(factor=1):
 
 ######## TEST SETUP AND PREPARATION
 
-def reset_owncloud_account(reset_procedure=None, num_test_users=None):
+def reset_owncloud_account(reset_procedure=None, num_test_users=None, login_users=True):
     """ 
     Prepare the test account on the owncloud server (remote state). Run this once at the beginning of the test.
 
@@ -40,13 +40,15 @@ def reset_owncloud_account(reset_procedure=None, num_test_users=None):
         if num_test_users is None:
             delete_owncloud_account(config.oc_account_name)
             create_owncloud_account(config.oc_account_name, config.oc_account_password)
-            login_owncloud_account(config.oc_account_name, config.oc_account_password)
+            if login_users:
+                login_owncloud_account(config.oc_account_name, config.oc_account_password)
         else:
             for i in range(1, num_test_users + 1):
                 username = "%s%i" % (config.oc_account_name, i)
                 delete_owncloud_account(username)
                 create_owncloud_account(username, config.oc_account_password)
-                login_owncloud_account(username, config.oc_account_password)
+                if login_users:
+                    login_owncloud_account(username, config.oc_account_password)
 
         return
 
